@@ -1,0 +1,28 @@
+{
+  "name": "aster-mcp",
+  "version": "0.1.0",
+  "description": "Production-ready Model Context Protocol (MCP) server for AsterDEX",
+  "main": "mcp/index.js",
+  "author": "Tairon.ai",
+  "homepage": "https://tairon.ai",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js",
+    "mcp": "node mcp/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.7.0",
+    "@solana/web3.js": "^1.95.0",
+    "axios": "^1.6.0",
+    "bip39": "^3.1.0",
+    "bs58": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.0",
+    "express": "^4.21.2",
+    "tweetnacl": "^1.0.3",
+    "uuid": "^11.1.0",
+    "ws": "^8.14.2",
+    "zod": "^3.24.2"
+  }
+}

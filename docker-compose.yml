@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build: .
+    image: aster-mcp:latest
+    container_name: aster-mcp
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - NODE_ENV=production
+      # Aster DEX API Configuration
+      - ASTER_API_KEY=${ASTER_API_KEY}
+      - ASTER_API_SECRET=${ASTER_API_SECRET}
+      - ASTER_API_BASE_URL=${ASTER_API_BASE_URL:-https://sapi.asterdex.com}
+      - ASTER_RECV_WINDOW=${ASTER_RECV_WINDOW:-5000}
+      # Ethereum Wallet Configuration
+      - ETHEREUM_WALLET_PRIVATE_KEY=${ETHEREUM_WALLET_PRIVATE_KEY}
+      - ETHEREUM_WALLET_MNEMONIC=${ETHEREUM_WALLET_MNEMONIC}
+      - ETHEREUM_RPC_URL=${ETHEREUM_RPC_URL:-https://eth.llamarpc.com}
+      # Arbitrum Wallet Configuration
+      - ARBITRUM_WALLET_PRIVATE_KEY=${ARBITRUM_WALLET_PRIVATE_KEY}
+      - ARBITRUM_WALLET_MNEMONIC=${ARBITRUM_WALLET_MNEMONIC}
+      - ARBITRUM_RPC_URL=${ARBITRUM_RPC_URL:-https://arb1.arbitrum.io/rpc}
+      # BNB Chain Wallet Configuration
+      - BNB_WALLET_PRIVATE_KEY=${BNB_WALLET_PRIVATE_KEY}
+      - BNB_WALLET_MNEMONIC=${BNB_WALLET_MNEMONIC}
+      - BNB_RPC_URL=${BNB_RPC_URL:-https://bsc-dataseed.binance.org}
+      # Solana Wallet Configuration
+      - SOLANA_WALLET_PRIVATE_KEY=${SOLANA_WALLET_PRIVATE_KEY}
+      - SOLANA_WALLET_MNEMONIC=${SOLANA_WALLET_MNEMONIC}
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.mainnet-beta.solana.com}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8080/health', (r) => {r.statusCode === 200 ? process.exit(0) : process.exit(1)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.aster.service=mcp"
+      - "com.aster.version=0.1.0"
+      - "com.aster.type=dex-integration"
